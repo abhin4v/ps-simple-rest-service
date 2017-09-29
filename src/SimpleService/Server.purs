@@ -2,11 +2,10 @@ module SimpleService.Server (runServer) where
 
 import Prelude
 
-import Control.Monad.Aff (launchAff)
+import Control.Monad.Aff (runAff)
 import Control.Monad.Eff (Eff)
 import Control.Monad.Eff.Class (liftEff)
 import Control.Monad.Eff.Console (CONSOLE, log, logShow)
-import Control.Monad.Eff.Exception (catchException)
 import Database.PostgreSQL as PG
 import Node.Express.App (App, delete, get, http, listenHttp, post, useExternal)
 import Node.Express.Types (EXPRESS, Method(..))
@@ -32,8 +31,7 @@ runServer :: forall eff.
                  , postgreSQL :: PG.POSTGRESQL
                  , console :: CONSOLE
                  | eff ) Unit
-runServer port databaseConfig = catchException logShow $
-  void $ launchAff do
-    pool <- PG.newPool databaseConfig
-    let app' = app pool
-    liftEff $ listenHttp app' port \_ -> log $ "Server listening on :" <> show port
+runServer port databaseConfig =  void $ runAff logShow pure do
+  pool <- PG.newPool databaseConfig
+  let app' = app pool
+  void $ liftEff $ listenHttp app' port \_ -> log $ "Server listening on :" <> show port
