@@ -6,6 +6,7 @@ import Data.Array as Array
 import Data.Either (Either(..))
 import Data.Foreign.Class (class Decode, class Encode)
 import Data.Foreign.Generic (defaultOptions, genericDecode, genericEncode)
+import Data.Foreign.NullOrUndefined (NullOrUndefined)
 import Data.Generic.Rep (class Generic)
 import Data.Generic.Rep.Show (genericShow)
 import Database.PostgreSQL (class FromSQLRow, class ToSQLRow, fromSQLValue, toSQLValue)
@@ -37,3 +38,10 @@ instance userFromSQLRow :: FromSQLRow User where
 
 instance userToSQLRow :: ToSQLRow User where
   toSQLRow (User {id, name}) = [toSQLValue id, toSQLValue name]
+
+newtype UserPatch = UserPatch { name :: NullOrUndefined String }
+
+derive instance genericUserPatch :: Generic UserPatch _
+
+instance decodeUserPatch :: Decode UserPatch where
+  decode = genericDecode $ defaultOptions { unwrapSingleConstructors = true }

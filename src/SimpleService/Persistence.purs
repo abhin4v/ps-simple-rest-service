@@ -3,6 +3,7 @@ module SimpleServer.Persistence
   , findUser
   , updateUser
   , deleteUser
+  , listUsers
   ) where
 
 import Prelude
@@ -25,6 +26,9 @@ updateUserQuery = "update users set name = $1 where id = $2"
 deleteUserQuery :: String
 deleteUserQuery = "delete from users where id = $1"
 
+listUsersQuery :: String
+listUsersQuery = "select id, name from users"
+
 insertUser :: forall eff. PG.Connection -> User -> Aff (postgreSQL :: PG.POSTGRESQL | eff) Unit
 insertUser conn user = PG.execute conn (PG.Query insertUserQuery) user
 
@@ -36,3 +40,6 @@ updateUser conn (User {id, name}) = PG.execute conn (PG.Query updateUserQuery) (
 
 deleteUser :: forall eff. PG.Connection -> UserID -> Aff (postgreSQL :: PG.POSTGRESQL | eff) Unit
 deleteUser conn userID = PG.execute conn (PG.Query deleteUserQuery) (PG.Row1 userID)
+
+listUsers :: forall eff. PG.Connection -> Aff (postgreSQL :: PG.POSTGRESQL | eff) (Array User)
+listUsers conn = PG.query conn (PG.Query listUsersQuery) PG.Row0
