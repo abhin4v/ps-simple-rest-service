@@ -1,4 +1,4 @@
-module SimpleServer.Persistence
+module SimpleService.Persistence
   ( insertUser
   , findUser
   , updateUser
@@ -12,7 +12,7 @@ import Control.Monad.Aff (Aff)
 import Data.Array as Array
 import Data.Maybe (Maybe)
 import Database.PostgreSQL as PG
-import SimpleServer.Types (User(..), UserID)
+import SimpleService.Types (User(..), UserID)
 
 insertUserQuery :: String
 insertUserQuery = "insert into users (id, name) values ($1, $2)"

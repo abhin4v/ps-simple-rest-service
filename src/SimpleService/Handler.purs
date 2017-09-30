@@ -14,8 +14,8 @@ import Database.PostgreSQL as PG
 import Node.Express.Handler (Handler)
 import Node.Express.Request (getBody, getRouteParam)
 import Node.Express.Response (end, sendJson, setStatus)
-import SimpleServer.Persistence as P
-import SimpleServer.Types
+import SimpleService.Persistence as P
+import SimpleService.Types
 
 getUser :: forall eff. PG.Pool -> Handler (postgreSQL :: PG.POSTGRESQL | eff)
 getUser pool = getRouteParam "id" >>= case _ of

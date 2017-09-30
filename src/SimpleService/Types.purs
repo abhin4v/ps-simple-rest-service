@@ -1,4 +1,4 @@
-module SimpleServer.Types where
+module SimpleService.Types where
 
 import Prelude
 
