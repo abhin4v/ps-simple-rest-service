@@ -19,7 +19,7 @@ main = runServer port databaseConfig
                      , password: ""
                      , host: "localhost"
                      , port: 5432
-                     , database: "simple_server"
+                     , database: "simple_service"
                      , max: 10
                      , idleTimeoutMillis: 1000
                      }
